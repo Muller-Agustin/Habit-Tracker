@@ -1,0 +1,1 @@
+console.log("Aplicación inicializada y lista para la lógica de hábitos.");
