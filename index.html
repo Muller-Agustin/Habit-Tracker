@@ -9,10 +9,41 @@
 <body>
     <main>
         <h1>Calm Tracker</h1>
-        
+
         <!-- Formulario de creación -->
         <form id="habit-form" class="habit-form">
-            <input type="text" id="habit-input" placeholder="Ej. Leer 10 páginas..." required autocomplete="off">
+            <!-- Contenedor del selector de emojis -->
+            <div class="emoji-selector-container">
+                <input type="text" id="habit-emoji" class="emoji-input" placeholder="+" readonly required>
+
+                <!-- Panel oculto por defecto -->
+                <div id="emoji-panel" class="emoji-panel hidden"></div>
+            </div>
+            <input
+                type="text"
+                id="habit-input"
+                class="text-input"
+                placeholder="Añade tu primer hábito aquí!"
+                required
+                autocomplete="off"
+            >
+
+            <div class="color-picker">
+                <!-- Paleta de colores sobrios (Calm Tech) -->
+                <label class="color-swatch" style="background-color: #8A9A5B;">
+                    <input type="radio" name="habit-color" value="#8A9A5B" checked>
+                </label>
+                <label class="color-swatch" style="background-color: #6082B6;">
+                    <input type="radio" name="habit-color" value="#6082B6">
+                </label>
+                <label class="color-swatch" style="background-color: #E2725B;">
+                    <input type="radio" name="habit-color" value="#E2725B">
+                </label>
+                <label class="color-swatch" style="background-color: #DDA0DD;">
+                    <input type="radio" name="habit-color" value="#DDA0DD">
+                </label>
+            </div>
+
             <button type="submit">Agregar</button>
         </form>
 
