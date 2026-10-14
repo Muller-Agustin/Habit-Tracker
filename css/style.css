@@ -48,3 +48,47 @@ body {
 .habit-form button:hover {
     background-color: #555;
 }
+
+/* Lista y tarjetas de hábitos */
+.empty-state {
+    color: #777;
+    text-align: center;
+    margin-top: 2rem;
+    font-style: italic;
+}
+
+.habit-card {
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.habit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.habit-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.delete-btn {
+    background: none;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background-color: #ff4d4d;
+    color: white;
+}
