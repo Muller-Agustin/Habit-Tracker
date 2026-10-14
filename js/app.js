@@ -20,16 +20,36 @@ function saveHabits() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
 }
 
-function testCreateHabit(nombre) {
+// Referencias a los elementos del DOM
+const form = document.getElementById('habit-form');
+const input = document.getElementById('habit-input');
+
+/**
+ * Función oficial para agregar un hábito desde la interfaz.
+ */
+function addHabit(name) {
     const newHabit = {
         id: Date.now(), 
-        nombre: nombre,
+        nombre: name,
         fechasCumplidas: []
     };
     
     habits.push(newHabit);
     saveHabits();
-    console.log(`Hábito "${nombre}" guardado con éxito. ID: ${newHabit.id}`);
+    console.log(`Hábito agregado vía UI: ${name}`);
+    console.log("Estado actual:", habits);
+    
 }
+
+// Escuchador del evento 'submit' del formulario
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const habitName = input.value.trim();
+    
+    if (habitName !== '') {
+        addHabit(habitName);
+        input.value = '';
+    }
+});
 
 loadHabits();
