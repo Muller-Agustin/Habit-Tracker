@@ -194,3 +194,26 @@ body {
     background-color: #6082B6;
     color: white;
 }
+
+/* Botón de Check-in diario */
+.check-btn {
+    background: none;
+    border: 2px solid #ccc; /* Gris claro por defecto */
+    color: #555;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    margin-right: auto; /* Empuja los otros botones a la derecha */
+}
+
+.check-btn:hover {
+    border-color: #888;
+}
+
+.check-btn.completed {
+    color: white;
+    border-color: transparent;
+}

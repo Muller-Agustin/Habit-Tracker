@@ -25,8 +25,34 @@ function saveHabits() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
 }
 
-// Renderizado y operaciones con hábitos
+function getTodayString() {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${today.getFullYear()}-${month}-${day}`;
+}
+
+function toggleHabit(id) {
+    const habit = habits.find(item => item.id === id);
+    if (!habit) return;
+
+    if (!Array.isArray(habit.fechasCumplidas)) {
+        habit.fechasCumplidas = [];
+    }
+
+    const today = getTodayString();
+    if (habit.fechasCumplidas.includes(today)) {
+        habit.fechasCumplidas = habit.fechasCumplidas.filter(date => date !== today);
+    } else {
+        habit.fechasCumplidas.push(today);
+    }
+
+    saveHabits();
+    renderHabits();
+}
+
 function renderHabits() {
+    const today = getTodayString();
     habitList.innerHTML = '';
 
     if (habits.length === 0) {
@@ -46,6 +72,16 @@ function renderHabits() {
         habitName.textContent = `${habit.emoji} ${habit.nombre}`;
         habitName.style.color = habit.color;
 
+        const isCompletedToday = Array.isArray(habit.fechasCumplidas)
+            && habit.fechasCumplidas.includes(today);
+        const checkButton = document.createElement('button');
+        checkButton.className = isCompletedToday ? 'check-btn completed' : 'check-btn';
+        checkButton.textContent = isCompletedToday ? '✓ Listo' : 'Marcar hoy';
+        if (isCompletedToday) {
+            checkButton.style.backgroundColor = habit.color;
+        }
+        checkButton.addEventListener('click', () => toggleHabit(habit.id));
+
         const editButton = document.createElement('button');
         editButton.className = 'edit-btn';
         editButton.textContent = 'Edit';
@@ -58,7 +94,7 @@ function renderHabits() {
 
         const habitActions = document.createElement('div');
         habitActions.className = 'habit-actions';
-        habitActions.append(editButton, deleteButton);
+        habitActions.append(checkButton, editButton, deleteButton);
 
         habitHeader.append(habitName, habitActions);
         habitElement.appendChild(habitHeader);
