@@ -47,6 +47,15 @@
             <button type="submit">Agregar</button>
         </form>
 
+        <div class="view-controls">
+            <label for="view-selector">Vista del mapa: </label>
+            <select id="view-selector" class="view-selector">
+                <option value="weekly" selected>Últimos 7 días</option>
+                <option value="monthly">Últimos 30 días</option>
+                <option value="yearly">Último año</option>
+            </select>
+        </div>
+
         <!-- Contenedor para la lista de hábitos -->
         <div id="habit-list" class="habit-list"></div>
     </main>

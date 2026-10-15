@@ -224,6 +224,7 @@ body {
     padding-top: 1rem;
     border-top: 1px dashed #eaeaea;
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end; /* Alineamos los cuadros a la derecha */
     gap: 6px; /* Separación entre días */
 }
@@ -240,4 +241,53 @@ body {
 
 .heatmap-cell:hover {
     transform: scale(1.15); /* Pequeño feedback visual al pasar el mouse */
+}
+
+/* Controles de vista */
+.view-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.view-selector {
+    margin-left: 8px;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* Modificaciones al Heatmap para soportar 30 y 365 días */
+.heatmap-container {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #eaeaea;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap; /* CRUCIAL: Permite que los cuadros bajen a la siguiente línea si no hay espacio */
+    gap: 4px; /* Redujimos un poco el gap para que entren mejor */
+}
+
+/* Tamaño estándar (Semanal y Mensual) */
+.heatmap-cell {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background-color: #eaeaea;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.3s ease;
+}
+
+/* Tamaño reducido (Anual) - Esta clase la inyectaremos con JS */
+.heatmap-container.view-yearly .heatmap-cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
 }

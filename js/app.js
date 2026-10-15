@@ -11,6 +11,13 @@ const emojiPanel = document.getElementById('emoji-panel');
 const habitList = document.getElementById('habit-list');
 const colorRadios = document.querySelectorAll('input[name="habit-color"]');
 const submitBtn = form.querySelector('button[type="submit"]');
+let currentView = 'weekly';
+const viewSelector = document.getElementById('view-selector');
+
+viewSelector.addEventListener('change', event => {
+    currentView = event.target.value;
+    renderHabits();
+});
 
 // Persistencia
 function loadHabits() {
@@ -32,9 +39,9 @@ function getTodayString() {
     return `${today.getFullYear()}-${month}-${day}`;
 }
 
-function getLast7Days() {
+function getLastNDays(n) {
     const days = [];
-    for (let i = 6; i >= 0; i--) {
+    for (let i = n - 1; i >= 0; i--) {
         const d = new Date();
         d.setDate(d.getDate() - i);
 
@@ -69,7 +76,17 @@ function toggleHabit(id, dateStr = getTodayString()) {
 
 function renderHabits() {
     const today = getTodayString();
-    const last7Days = getLast7Days();
+    let daysToRender = 7;
+    let extraClass = '';
+
+    if (currentView === 'monthly') {
+        daysToRender = 30;
+    } else if (currentView === 'yearly') {
+        daysToRender = 365;
+        extraClass = ' view-yearly';
+    }
+
+    const datesToShow = getLastNDays(daysToRender);
     habitList.innerHTML = '';
 
     if (habits.length === 0) {
@@ -117,9 +134,9 @@ function renderHabits() {
         habitElement.appendChild(habitHeader);
 
         const heatmap = document.createElement('div');
-        heatmap.className = 'heatmap-container';
+        heatmap.className = `heatmap-container${extraClass}`;
 
-        last7Days.forEach(dateStr => {
+        datesToShow.forEach(dateStr => {
             const isCompleted = Array.isArray(habit.fechasCumplidas)
                 && habit.fechasCumplidas.includes(dateStr);
             const cell = document.createElement('div');
