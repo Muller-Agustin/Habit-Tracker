@@ -15,7 +15,6 @@ const colorRadios = document.querySelectorAll('input[name="habit-color"]');
 const colorPicker = document.getElementById('color-picker');
 const colorPickerToggle = document.getElementById('color-picker-toggle');
 const selectedColorSwatch = document.getElementById('selected-color-swatch');
-const submitBtn = form.querySelector('button[type="submit"]');
 const viewSelector = document.getElementById('view-selector');
 const themeToggle = document.getElementById('theme-toggle');
 const helpToggle = document.getElementById('help-toggle');
@@ -79,6 +78,12 @@ function renderHabits() {
         const habitElement = document.createElement('div');
         habitElement.className = 'habit-card';
 
+        if (editingId === habit.id) {
+            habitElement.appendChild(renderHabitEditor(habit));
+            habitList.appendChild(habitElement);
+            return;
+        }
+
         const habitHeader = document.createElement('div');
         habitHeader.className = 'habit-header';
 
@@ -91,7 +96,7 @@ function renderHabits() {
             && habit.fechasCumplidas.includes(today);
         const checkButton = document.createElement('button');
         checkButton.className = isCompletedToday ? 'check-btn completed' : 'check-btn';
-        checkButton.textContent = isCompletedToday ? '✓ Listo' : 'Marcar hoy';
+        checkButton.textContent = isCompletedToday ? 'Desmarcar hoy' : 'Completar hoy';
         if (isCompletedToday) {
             checkButton.style.backgroundColor = habit.color;
         }
@@ -158,21 +163,108 @@ function deleteHabit(id) {
 }
 
 function editHabit(id) {
-    const habitToEdit = habits.find(habit => habit.id === id);
-    if (!habitToEdit) return;
-
-    input.value = habitToEdit.nombre;
-    emojiInput.value = habitToEdit.emoji || '';
-
-    const colorRadio = document.querySelector(`input[name="habit-color"][value="${habitToEdit.color}"]`);
-    if (colorRadio) {
-        colorRadio.checked = true;
-    }
-
-    updateEmojiInputColor();
     editingId = id;
-    submitBtn.textContent = 'Actualizar';
-    input.focus();
+    renderHabits();
+}
+
+function renderHabitEditor(habit) {
+    const editor = document.createElement('form');
+    editor.className = 'habit-editor';
+
+    const nameInput = document.createElement('input');
+    nameInput.className = 'text-input';
+    nameInput.name = 'name';
+    nameInput.value = habit.nombre;
+    nameInput.required = true;
+    nameInput.setAttribute('aria-label', 'Nombre del hábito');
+
+    const emojiSelect = document.createElement('select');
+    emojiSelect.className = 'inline-emoji-select';
+    emojiSelect.name = 'emoji';
+    emojiSelect.setAttribute('aria-label', 'Emoji del hábito');
+
+    const noEmojiOption = document.createElement('option');
+    noEmojiOption.value = '';
+    noEmojiOption.textContent = 'Sin emoji';
+    emojiSelect.appendChild(noEmojiOption);
+
+    PREDEFINED_EMOJIS.forEach(emoji => {
+        const option = document.createElement('option');
+        option.value = emoji;
+        option.textContent = emoji;
+        emojiSelect.appendChild(option);
+    });
+    emojiSelect.value = habit.emoji || '';
+
+    const colors = ['#8A9A5B', '#6082B6', '#E2725B', '#DDA0DD'];
+    const colorOptions = document.createElement('div');
+    colorOptions.className = 'inline-color-options';
+
+    colors.forEach(color => {
+        const colorButton = document.createElement('button');
+        colorButton.type = 'button';
+        colorButton.className = 'inline-color-option';
+        colorButton.dataset.color = color;
+        colorButton.style.backgroundColor = color;
+        colorButton.setAttribute('aria-label', `Elegir color ${color}`);
+        colorButton.setAttribute('aria-pressed', String(color === habit.color));
+        if (color === habit.color) {
+            colorButton.classList.add('selected');
+        }
+
+        colorButton.addEventListener('click', () => {
+            colorOptions.querySelectorAll('.inline-color-option').forEach(option => {
+                option.classList.remove('selected');
+                option.setAttribute('aria-pressed', 'false');
+            });
+            colorButton.classList.add('selected');
+            colorButton.setAttribute('aria-pressed', 'true');
+        });
+        colorOptions.appendChild(colorButton);
+    });
+
+    const actions = document.createElement('div');
+    actions.className = 'habit-editor-actions';
+
+    const saveButton = document.createElement('button');
+    saveButton.type = 'submit';
+    saveButton.className = 'edit-btn';
+    saveButton.textContent = 'Guardar';
+
+    const cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.className = 'delete-btn';
+    cancelButton.textContent = 'Cancelar';
+    cancelButton.addEventListener('click', () => {
+        editingId = null;
+        renderHabits();
+    });
+
+    actions.append(saveButton, cancelButton);
+    editor.append(nameInput, emojiSelect, colorOptions, actions);
+    nameInput.focus();
+    editor.addEventListener('submit', event => {
+        event.preventDefault();
+        const name = nameInput.value.trim();
+        if (name === '') {
+            nameInput.value = '';
+            nameInput.reportValidity();
+            return;
+        }
+
+        const selectedColor = colorOptions.querySelector('.inline-color-option.selected');
+        const habitToUpdate = habits.find(item => item.id === habit.id);
+        if (!habitToUpdate || !selectedColor) return;
+
+        habitToUpdate.nombre = name;
+        habitToUpdate.emoji = emojiSelect.value;
+        habitToUpdate.color = selectedColor.dataset.color;
+        editingId = null;
+        saveHabits();
+        renderHabits();
+    });
+
+    return editor;
 }
 
 function toggleHabit(id, dateStr = getTodayString()) {
@@ -289,22 +381,7 @@ form.addEventListener('submit', event => {
     const habitColor = document.querySelector('input[name="habit-color"]:checked').value;
 
     if (habitName !== '') {
-        if (editingId !== null) {
-            const index = habits.findIndex(habit => habit.id === editingId);
-            if (index !== -1) {
-                habits[index].nombre = habitName;
-                habits[index].emoji = habitEmoji;
-                habits[index].color = habitColor;
-            }
-
-            editingId = null;
-            submitBtn.textContent = 'Agregar';
-            saveHabits();
-            renderHabits();
-        } else {
-            addHabit(habitName, habitEmoji, habitColor);
-        }
-
+        addHabit(habitName, habitEmoji, habitColor);
         input.value = '';
         emojiInput.value = '';
     }
