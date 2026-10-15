@@ -1,8 +1,10 @@
 const STORAGE_KEY = 'habits_data';
+const THEME_STORAGE_KEY = 'habit_tracker_theme';
 const PREDEFINED_EMOJIS = ['📚', '💧', '🏃', '🧘', '🍎', '💤', '📝', '🌿', '🏋️', '🧹', '🎨', '💰'];
 
 let habits = [];
 let editingId = null;
+let currentView = 'weekly';
 
 const form = document.getElementById('habit-form');
 const input = document.getElementById('habit-input');
@@ -11,15 +13,9 @@ const emojiPanel = document.getElementById('emoji-panel');
 const habitList = document.getElementById('habit-list');
 const colorRadios = document.querySelectorAll('input[name="habit-color"]');
 const submitBtn = form.querySelector('button[type="submit"]');
-let currentView = 'weekly';
 const viewSelector = document.getElementById('view-selector');
+const themeToggle = document.getElementById('theme-toggle');
 
-viewSelector.addEventListener('change', event => {
-    currentView = event.target.value;
-    renderHabits();
-});
-
-// Persistencia
 function loadHabits() {
     const storedData = localStorage.getItem(STORAGE_KEY);
     if (storedData) {
@@ -42,36 +38,15 @@ function getTodayString() {
 function getLastNDays(n) {
     const days = [];
     for (let i = n - 1; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
+        const date = new Date();
+        date.setDate(date.getDate() - i);
 
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
         days.push(`${year}-${month}-${day}`);
     }
     return days;
-}
-
-function toggleHabit(id, dateStr = getTodayString()) {
-    const habit = habits.find(h => h.id === id);
-    if (!habit) return;
-
-    if (!Array.isArray(habit.fechasCumplidas)) {
-        habit.fechasCumplidas = [];
-    }
-
-    const hasCompleted = habit.fechasCumplidas.includes(dateStr);
-
-    if (hasCompleted) {
-        habit.fechasCumplidas = habit.fechasCumplidas.filter(date => date !== dateStr);
-    } else {
-        habit.fechasCumplidas.push(dateStr);
-    }
-
-    saveHabits();
-    renderHabits();
 }
 
 function renderHabits() {
@@ -118,12 +93,12 @@ function renderHabits() {
 
         const editButton = document.createElement('button');
         editButton.className = 'edit-btn';
-        editButton.textContent = 'Edit';
+        editButton.textContent = 'Editar';
         editButton.addEventListener('click', () => editHabit(habit.id));
 
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-btn';
-        deleteButton.textContent = 'Delete';
+        deleteButton.textContent = 'Eliminar';
         deleteButton.addEventListener('click', () => deleteHabit(habit.id));
 
         const habitActions = document.createElement('div');
@@ -194,7 +169,25 @@ function editHabit(id) {
     input.focus();
 }
 
-// Selector de emojis y color
+function toggleHabit(id, dateStr = getTodayString()) {
+    const habit = habits.find(habit => habit.id === id);
+    if (!habit) return;
+
+    if (!Array.isArray(habit.fechasCumplidas)) {
+        habit.fechasCumplidas = [];
+    }
+
+    const hasCompleted = habit.fechasCumplidas.includes(dateStr);
+    if (hasCompleted) {
+        habit.fechasCumplidas = habit.fechasCumplidas.filter(date => date !== dateStr);
+    } else {
+        habit.fechasCumplidas.push(dateStr);
+    }
+
+    saveHabits();
+    renderHabits();
+}
+
 function initEmojiPicker() {
     PREDEFINED_EMOJIS.forEach(emoji => {
         const option = document.createElement('span');
@@ -225,7 +218,23 @@ function updateEmojiInputColor() {
     emojiInput.style.boxShadow = `0 0 8px ${selectedColor}40`;
 }
 
-// Eventos e inicialización
+function setDarkMode(isDark) {
+    document.body.classList.toggle('dark-mode', isDark);
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    themeToggle.setAttribute('aria-label', isDark ? 'Activar modo claro' : 'Activar modo oscuro');
+    themeToggle.title = isDark ? 'Activar modo claro' : 'Activar modo oscuro';
+    localStorage.setItem(THEME_STORAGE_KEY, isDark ? 'dark' : 'light');
+}
+
+viewSelector.addEventListener('change', event => {
+    currentView = event.target.value;
+    renderHabits();
+});
+
+themeToggle.addEventListener('click', () => {
+    setDarkMode(!document.body.classList.contains('dark-mode'));
+});
+
 colorRadios.forEach(radio => {
     radio.addEventListener('change', updateEmojiInputColor);
 });
@@ -261,4 +270,5 @@ form.addEventListener('submit', event => {
 
 initEmojiPicker();
 updateEmojiInputColor();
+setDarkMode(localStorage.getItem(THEME_STORAGE_KEY) === 'dark');
 loadHabits();

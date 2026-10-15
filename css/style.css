@@ -197,7 +197,6 @@ body {
     background-color: #555;
 }
 
-/* Controles de vista */
 .view-controls {
     display: flex;
     align-items: center;
@@ -337,7 +336,7 @@ body {
     width: 100%;
     padding: 1.25rem 1rem;
     border-top: 1px solid #e5e5e5;
-    background-color: #fff;
+    background-color: #F2F0EF;
 }
 
 .footer-content {
@@ -390,4 +389,106 @@ body {
     .view-controls {
         flex-wrap: wrap;
     }
+}
+
+body.dark-mode {
+    color-scheme: dark;
+    background-color: #101923;
+    color: #e1e8ed;
+}
+
+body.dark-mode .app-header {
+    background-color: #1b3445;
+}
+
+body.dark-mode .icon-btn {
+    border-color: rgba(225, 232, 237, 0.55);
+}
+
+body.dark-mode .icon-btn:hover {
+    background-color: rgba(225, 232, 237, 0.12);
+}
+
+body.dark-mode .emoji-input,
+body.dark-mode .emoji-panel,
+body.dark-mode .text-input,
+body.dark-mode .view-selector {
+    border-color: #405261;
+    background-color: #1b2935;
+    color: #e1e8ed;
+}
+
+body.dark-mode .emoji-option:hover {
+    background-color: #293a49;
+}
+
+body.dark-mode .emoji-input:focus,
+body.dark-mode .text-input:focus {
+    border-color: #8eafc4;
+}
+
+body.dark-mode .color-swatch:has(input[type="radio"]:checked) {
+    box-shadow: 0 0 0 2px #101923, 0 0 0 4px #8eafc4;
+}
+
+body.dark-mode .habit-form button {
+    background-color: #36566b;
+}
+
+body.dark-mode .habit-form button:hover {
+    background-color: #466b82;
+}
+
+body.dark-mode .view-controls,
+body.dark-mode .check-btn {
+    color: #c5d0d8;
+}
+
+body.dark-mode .empty-state {
+    color: #a4b2bd;
+}
+
+body.dark-mode .habit-card {
+    border-color: #2d3d4b;
+    background-color: #182532;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+body.dark-mode .check-btn {
+    border-color: #536574;
+}
+
+body.dark-mode .check-btn:hover {
+    border-color: #9aabb8;
+}
+
+body.dark-mode .check-btn.completed {
+    color: #fff;
+}
+
+body.dark-mode .edit-btn {
+    border-color: #91b7e5;
+    color: #91b7e5;
+}
+
+body.dark-mode .edit-btn:hover {
+    background-color: #91b7e5;
+    color: #101923;
+}
+
+body.dark-mode .heatmap-container {
+    border-top-color: #354553;
+}
+
+body.dark-mode .heatmap-cell {
+    background-color: #344451;
+}
+
+body.dark-mode .app-footer {
+    border-top-color: #2d3d4b;
+    background-color: #141f2a;
+}
+
+body.dark-mode .footer-content {
+    color: #bdc9d2;
 }
