@@ -5,54 +5,122 @@
 }
 
 body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     font-family: system-ui, -apple-system, sans-serif;
     background-color: #f9f9f9;
     color: #333;
-    padding: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
 }
 
-/* Estilos del formulario */
+/* Header */
+.app-header {
+    width: 100%;
+    color: #fff;
+    background-color: #c62828;
+}
+
+.header-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.header-content h1 {
+    font-size: 1.4rem;
+    font-weight: 650;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 6px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.icon-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.icon-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.help-btn {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Contenido principal */
+.app-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 2rem;
+    flex: 1;
+}
+
+/* Formulario de hábitos */
 .habit-form {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 2rem;
-    margin-top: 1.5rem;
     align-items: center;
-}
-
-.emoji-input {
-    width: 50px;
-    text-align: center;
-    padding: 0.8rem 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    background-color: white;
-    transition: all 0.3s ease;
+    gap: 10px;
+    margin: 0 0 2rem;
 }
 
 .emoji-selector-container {
     position: relative;
 }
 
+.emoji-input {
+    width: 50px;
+    padding: 0.8rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    text-align: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
 .emoji-panel {
     position: absolute;
     top: 100%;
     left: 0;
-    margin-top: 5px;
-    background: white;
-    border: 1px solid #eaeaea;
-    border-radius: 6px;
-    padding: 10px;
+    z-index: 10;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    background: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 10;
 }
 
 .emoji-panel.hidden {
@@ -60,11 +128,11 @@ body {
 }
 
 .emoji-option {
-    cursor: pointer;
-    font-size: 1.5rem;
     padding: 5px;
-    text-align: center;
     border-radius: 4px;
+    text-align: center;
+    font-size: 1.5rem;
+    cursor: pointer;
     transition: background-color 0.2s;
 }
 
@@ -74,6 +142,7 @@ body {
 
 .text-input {
     flex: 1;
+    min-width: 140px;
     padding: 0.8rem;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -86,7 +155,6 @@ body {
     border-color: #333;
 }
 
-/* Estilos para el selector de color */
 .color-picker {
     display: flex;
     gap: 8px;
@@ -103,10 +171,10 @@ body {
 }
 
 .color-swatch input[type="radio"] {
-    opacity: 0;
     width: 0;
     height: 0;
     margin: 0;
+    opacity: 0;
 }
 
 .color-swatch:has(input[type="radio"]:checked) {
@@ -116,12 +184,12 @@ body {
 
 .habit-form button {
     padding: 0.8rem 1.2rem;
-    background-color: #333;
-    color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+    background-color: #333;
+    color: #fff;
     font-size: 1rem;
+    cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
@@ -129,128 +197,15 @@ body {
     background-color: #555;
 }
 
-/* Lista y tarjetas de hábitos */
-.empty-state {
-    color: #777;
-    text-align: center;
-    margin-top: 2rem;
-    font-style: italic;
-}
-
-.habit-card {
-    background-color: #fff;
-    border: 1px solid #eaeaea;
-    border-radius: 6px;
-    padding: 1.2rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.habit-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.habit-name {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-.delete-btn {
-    background: none;
-    border: 1px solid #ff4d4d;
-    color: #ff4d4d;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-}
-
-.delete-btn:hover {
-    background-color: #ff4d4d;
-    color: white;
-}
-
-/* Agrupa los botones a la derecha */
-.habit-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.edit-btn {
-    background: none;
-    border: 1px solid #6082B6; /* Azul Pizarra */
-    color: #6082B6;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-}
-
-.edit-btn:hover {
-    background-color: #6082B6;
-    color: white;
-}
-
-/* Botón de Check-in diario */
-.check-btn {
-    background: none;
-    border: 2px solid #ccc; /* Gris claro por defecto */
-    color: #555;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    margin-right: auto; /* Empuja los otros botones a la derecha */
-}
-
-.check-btn:hover {
-    border-color: #888;
-}
-
-.check-btn.completed {
-    color: white;
-    border-color: transparent;
-}
-
-/* Contenedor del Heatmap */
-.heatmap-container {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed #eaeaea;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end; /* Alineamos los cuadros a la derecha */
-    gap: 6px; /* Separación entre días */
-}
-
-/* Cada cuadradito del mapa de calor */
-.heatmap-cell {
-    width: 22px;
-    height: 22px;
-    border-radius: 4px; /* Bordes suaves */
-    background-color: #eaeaea; /* Color de día no cumplido */
-    cursor: pointer;
-    transition: transform 0.1s ease, background-color 0.3s ease;
-}
-
-.heatmap-cell:hover {
-    transform: scale(1.15); /* Pequeño feedback visual al pasar el mouse */
-}
-
 /* Controles de vista */
 .view-controls {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
     margin-bottom: 1rem;
-    font-size: 0.9rem;
     color: #555;
+    font-size: 0.9rem;
 }
 
 .view-selector {
@@ -258,24 +213,106 @@ body {
     padding: 0.4rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: white;
-    outline: none;
-    cursor: pointer;
+    background-color: #fff;
     font-family: inherit;
+    cursor: pointer;
+    outline: none;
 }
 
-/* Modificaciones al Heatmap para soportar 30 y 365 días */
+/* Tarjetas de hábitos */
+.empty-state {
+    margin-top: 2rem;
+    color: #777;
+    text-align: center;
+    font-style: italic;
+}
+
+.habit-card {
+    margin-bottom: 1rem;
+    padding: 1.2rem;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.habit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.habit-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.habit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-btn,
+.edit-btn,
+.check-btn {
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    background: none;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-btn {
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+}
+
+.delete-btn:hover {
+    background-color: #ff4d4d;
+    color: #fff;
+}
+
+.edit-btn {
+    border: 1px solid #6082B6;
+    color: #6082B6;
+}
+
+.edit-btn:hover {
+    background-color: #6082B6;
+    color: #fff;
+}
+
+.check-btn {
+    margin-right: auto;
+    border: 2px solid #ccc;
+    color: #555;
+    font-weight: bold;
+}
+
+.check-btn:hover {
+    border-color: #888;
+}
+
+.check-btn.completed {
+    border-color: transparent;
+    color: #fff;
+}
+
+/* Mapa de actividad */
 .heatmap-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px dashed #eaeaea;
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap; /* CRUCIAL: Permite que los cuadros bajen a la siguiente línea si no hay espacio */
-    gap: 4px; /* Redujimos un poco el gap para que entren mejor */
 }
 
-/* Tamaño estándar (Semanal y Mensual) */
 .heatmap-cell {
     width: 20px;
     height: 20px;
@@ -285,9 +322,72 @@ body {
     transition: transform 0.1s ease, background-color 0.3s ease;
 }
 
-/* Tamaño reducido (Anual) - Esta clase la inyectaremos con JS */
+.heatmap-cell:hover {
+    transform: scale(1.15);
+}
+
 .heatmap-container.view-yearly .heatmap-cell {
     width: 12px;
     height: 12px;
     border-radius: 2px;
+}
+
+/* Footer */
+.app-footer {
+    width: 100%;
+    padding: 1.25rem 1rem;
+    border-top: 1px solid #e5e5e5;
+    background-color: #fff;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.footer-content a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-content a:hover {
+    color: #c62828;
+}
+
+.footer-content svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+@media (max-width: 480px) {
+    .header-content {
+        padding: 0.9rem 1rem;
+    }
+
+    .header-content h1 {
+        font-size: 1.2rem;
+    }
+
+    .app-container {
+        padding: 1.25rem 1rem 1.75rem;
+    }
+
+    .habit-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .view-controls {
+        flex-wrap: wrap;
+    }
 }
