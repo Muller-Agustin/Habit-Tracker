@@ -12,9 +12,15 @@ const emojiInput = document.getElementById('habit-emoji');
 const emojiPanel = document.getElementById('emoji-panel');
 const habitList = document.getElementById('habit-list');
 const colorRadios = document.querySelectorAll('input[name="habit-color"]');
+const colorPicker = document.getElementById('color-picker');
+const colorPickerToggle = document.getElementById('color-picker-toggle');
+const selectedColorSwatch = document.getElementById('selected-color-swatch');
 const submitBtn = form.querySelector('button[type="submit"]');
 const viewSelector = document.getElementById('view-selector');
 const themeToggle = document.getElementById('theme-toggle');
+const helpToggle = document.getElementById('help-toggle');
+const helpDialog = document.getElementById('help-dialog');
+const helpClose = document.getElementById('help-close');
 
 function loadHabits() {
     const storedData = localStorage.getItem(STORAGE_KEY);
@@ -78,7 +84,7 @@ function renderHabits() {
 
         const habitName = document.createElement('span');
         habitName.className = 'habit-name';
-        habitName.textContent = `${habit.emoji} ${habit.nombre}`;
+        habitName.textContent = habit.emoji ? `${habit.emoji} ${habit.nombre}` : habit.nombre;
         habitName.style.color = habit.color;
 
         const isCompletedToday = Array.isArray(habit.fechasCumplidas)
@@ -156,7 +162,7 @@ function editHabit(id) {
     if (!habitToEdit) return;
 
     input.value = habitToEdit.nombre;
-    emojiInput.value = habitToEdit.emoji;
+    emojiInput.value = habitToEdit.emoji || '';
 
     const colorRadio = document.querySelector(`input[name="habit-color"][value="${habitToEdit.color}"]`);
     if (colorRadio) {
@@ -196,18 +202,27 @@ function initEmojiPicker() {
         option.addEventListener('click', () => {
             emojiInput.value = emoji;
             emojiPanel.classList.add('hidden');
+            emojiInput.setAttribute('aria-expanded', 'false');
         });
         emojiPanel.appendChild(option);
     });
 
     emojiInput.addEventListener('click', event => {
         emojiPanel.classList.toggle('hidden');
+        emojiInput.setAttribute('aria-expanded', String(!emojiPanel.classList.contains('hidden')));
+        colorPicker.classList.add('hidden');
+        colorPickerToggle.setAttribute('aria-expanded', 'false');
         event.stopPropagation();
     });
 
     document.addEventListener('click', event => {
         if (!emojiInput.contains(event.target) && !emojiPanel.contains(event.target)) {
             emojiPanel.classList.add('hidden');
+            emojiInput.setAttribute('aria-expanded', 'false');
+        }
+        if (!colorPickerToggle.contains(event.target) && !colorPicker.contains(event.target)) {
+            colorPicker.classList.add('hidden');
+            colorPickerToggle.setAttribute('aria-expanded', 'false');
         }
     });
 }
@@ -216,6 +231,7 @@ function updateEmojiInputColor() {
     const selectedColor = document.querySelector('input[name="habit-color"]:checked').value;
     emojiInput.style.borderColor = selectedColor;
     emojiInput.style.boxShadow = `0 0 8px ${selectedColor}40`;
+    selectedColorSwatch.style.backgroundColor = selectedColor;
 }
 
 function setDarkMode(isDark) {
@@ -226,6 +242,14 @@ function setDarkMode(isDark) {
     localStorage.setItem(THEME_STORAGE_KEY, isDark ? 'dark' : 'light');
 }
 
+colorPickerToggle.addEventListener('click', event => {
+    colorPicker.classList.toggle('hidden');
+    colorPickerToggle.setAttribute('aria-expanded', String(!colorPicker.classList.contains('hidden')));
+    emojiPanel.classList.add('hidden');
+    emojiInput.setAttribute('aria-expanded', 'false');
+    event.stopPropagation();
+});
+
 viewSelector.addEventListener('change', event => {
     currentView = event.target.value;
     renderHabits();
@@ -235,8 +259,26 @@ themeToggle.addEventListener('click', () => {
     setDarkMode(!document.body.classList.contains('dark-mode'));
 });
 
+helpToggle.addEventListener('click', () => {
+    helpDialog.showModal();
+});
+
+helpClose.addEventListener('click', () => {
+    helpDialog.close();
+});
+
+helpDialog.addEventListener('click', event => {
+    if (event.target === helpDialog) {
+        helpDialog.close();
+    }
+});
+
 colorRadios.forEach(radio => {
-    radio.addEventListener('change', updateEmojiInputColor);
+    radio.addEventListener('change', () => {
+        updateEmojiInputColor();
+        colorPicker.classList.add('hidden');
+        colorPickerToggle.setAttribute('aria-expanded', 'false');
+    });
 });
 
 form.addEventListener('submit', event => {
@@ -246,7 +288,7 @@ form.addEventListener('submit', event => {
     const habitEmoji = emojiInput.value.trim();
     const habitColor = document.querySelector('input[name="habit-color"]:checked').value;
 
-    if (habitName !== '' && habitEmoji !== '' && habitEmoji !== '+') {
+    if (habitName !== '') {
         if (editingId !== null) {
             const index = habits.findIndex(habit => habit.id === editingId);
             if (index !== -1) {

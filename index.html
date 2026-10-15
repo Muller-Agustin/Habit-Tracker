@@ -20,35 +20,53 @@
                     </svg>
                 </button>
 
-                <!-- Botón visual; la ayuda se desarrollará más adelante -->
                 <button id="help-toggle" class="icon-btn help-btn" type="button" title="Ayuda" aria-label="Ayuda">?</button>
             </div>
         </div>
     </header>
 
+    <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+        <div class="help-dialog-header">
+            <h2 id="help-title">Cómo usar Habit Tracker</h2>
+            <button id="help-close" class="help-close" type="button" aria-label="Cerrar ayuda">×</button>
+        </div>
+        <ol>
+            <li>Escribe el nombre del hábito. Puedes elegir un emoji y un color; el emoji es opcional.</li>
+            <li>Pulsa <strong>Agregar</strong> para guardar el hábito.</li>
+            <li>Pulsa <strong>Marcar hoy</strong> o una fecha del mapa para registrar un día completado.</li>
+            <li>Usa <strong>Editar</strong> para cambiar un hábito o <strong>Eliminar</strong> para borrarlo.</li>
+            <li>Cambia la vista a semanal, mensual o anual para revisar tu progreso.</li>
+        </ol>
+    </dialog>
+
     <div class="app-container">
         <main>
             <form id="habit-form" class="habit-form">
                 <div class="emoji-selector-container">
-                    <input type="text" id="habit-emoji" class="emoji-input" placeholder="+" readonly required aria-label="Elegir emoji">
+                    <input type="text" id="habit-emoji" class="emoji-input" placeholder="📚" readonly aria-label="Elegir emoji (opcional)" aria-haspopup="true" aria-expanded="false">
                     <div id="emoji-panel" class="emoji-panel hidden"></div>
                 </div>
 
                 <input type="text" id="habit-input" class="text-input" placeholder="Ej. Leer 10 páginas..." required autocomplete="off" aria-label="Nombre del hábito">
 
-                <div class="color-picker">
-                    <label class="color-swatch" style="background-color: #8A9A5B;">
-                        <input type="radio" name="habit-color" value="#8A9A5B" checked aria-label="Verde">
-                    </label>
-                    <label class="color-swatch" style="background-color: #6082B6;">
-                        <input type="radio" name="habit-color" value="#6082B6" aria-label="Azul">
-                    </label>
-                    <label class="color-swatch" style="background-color: #E2725B;">
-                        <input type="radio" name="habit-color" value="#E2725B" aria-label="Coral">
-                    </label>
-                    <label class="color-swatch" style="background-color: #DDA0DD;">
-                        <input type="radio" name="habit-color" value="#DDA0DD" aria-label="Lila">
-                    </label>
+                <div class="color-picker-container">
+                    <button type="button" id="color-picker-toggle" class="color-picker-toggle" aria-label="Elegir color" aria-haspopup="true" aria-expanded="false">
+                        <span id="selected-color-swatch" class="color-swatch" style="background-color: #8A9A5B;"></span>
+                    </button>
+                    <div id="color-picker" class="color-picker hidden">
+                        <label class="color-swatch" style="background-color: #8A9A5B;">
+                            <input type="radio" name="habit-color" value="#8A9A5B" checked aria-label="Verde">
+                        </label>
+                        <label class="color-swatch" style="background-color: #6082B6;">
+                            <input type="radio" name="habit-color" value="#6082B6" aria-label="Azul">
+                        </label>
+                        <label class="color-swatch" style="background-color: #E2725B;">
+                            <input type="radio" name="habit-color" value="#E2725B" aria-label="Coral">
+                        </label>
+                        <label class="color-swatch" style="background-color: #DDA0DD;">
+                            <input type="radio" name="habit-color" value="#DDA0DD" aria-label="Lila">
+                        </label>
+                    </div>
                 </div>
 
                 <button type="submit">Agregar</button>

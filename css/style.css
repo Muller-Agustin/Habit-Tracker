@@ -73,6 +73,52 @@ body {
     font-weight: 600;
 }
 
+.help-dialog {
+    position: fixed;
+    inset: 50% auto auto 50%;
+    width: min(90vw, 440px);
+    padding: 1.5rem;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -50%);
+}
+
+.help-dialog::backdrop {
+    background-color: rgba(10, 20, 30, 0.55);
+}
+
+.help-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.help-dialog-header h2 {
+    font-size: 1.2rem;
+}
+
+.help-close {
+    border: none;
+    background: none;
+    color: inherit;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.help-dialog ol {
+    padding-left: 1.25rem;
+}
+
+.help-dialog li + li {
+    margin-top: 0.75rem;
+}
+
 /* Contenido principal */
 .app-container {
     width: 100%;
@@ -155,10 +201,39 @@ body {
     border-color: #333;
 }
 
+.color-picker-container {
+    position: relative;
+}
+
+.color-picker-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+
 .color-picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
     display: flex;
     gap: 8px;
-    padding: 0 10px;
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.color-picker.hidden {
+    display: none;
 }
 
 .color-swatch {
@@ -182,7 +257,7 @@ body {
     box-shadow: 0 0 0 2px #f9f9f9, 0 0 0 4px #333;
 }
 
-.habit-form button {
+.habit-form button:not(.color-picker-toggle) {
     padding: 0.8rem 1.2rem;
     border: none;
     border-radius: 4px;
@@ -193,7 +268,7 @@ body {
     transition: background-color 0.2s ease;
 }
 
-.habit-form button:hover {
+.habit-form button:not(.color-picker-toggle):hover {
     background-color: #555;
 }
 
@@ -409,6 +484,12 @@ body.dark-mode .icon-btn:hover {
     background-color: rgba(225, 232, 237, 0.12);
 }
 
+body.dark-mode .help-dialog {
+    border-color: #405261;
+    background-color: #182532;
+    color: #e1e8ed;
+}
+
 body.dark-mode .emoji-input,
 body.dark-mode .emoji-panel,
 body.dark-mode .text-input,
@@ -416,6 +497,15 @@ body.dark-mode .view-selector {
     border-color: #405261;
     background-color: #1b2935;
     color: #e1e8ed;
+}
+
+body.dark-mode .color-picker-toggle {
+    border-color: #405261;
+}
+
+body.dark-mode .color-picker {
+    border-color: #405261;
+    background-color: #1b2935;
 }
 
 body.dark-mode .emoji-option:hover {
@@ -431,11 +521,11 @@ body.dark-mode .color-swatch:has(input[type="radio"]:checked) {
     box-shadow: 0 0 0 2px #101923, 0 0 0 4px #8eafc4;
 }
 
-body.dark-mode .habit-form button {
+body.dark-mode .habit-form button:not(.color-picker-toggle) {
     background-color: #36566b;
 }
 
-body.dark-mode .habit-form button:hover {
+body.dark-mode .habit-form button:not(.color-picker-toggle):hover {
     background-color: #466b82;
 }
 
