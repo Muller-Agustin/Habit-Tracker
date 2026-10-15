@@ -32,19 +32,35 @@ function getTodayString() {
     return `${today.getFullYear()}-${month}-${day}`;
 }
 
-function toggleHabit(id) {
-    const habit = habits.find(item => item.id === id);
+function getLast7Days() {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+
+        days.push(`${year}-${month}-${day}`);
+    }
+    return days;
+}
+
+function toggleHabit(id, dateStr = getTodayString()) {
+    const habit = habits.find(h => h.id === id);
     if (!habit) return;
 
     if (!Array.isArray(habit.fechasCumplidas)) {
         habit.fechasCumplidas = [];
     }
 
-    const today = getTodayString();
-    if (habit.fechasCumplidas.includes(today)) {
-        habit.fechasCumplidas = habit.fechasCumplidas.filter(date => date !== today);
+    const hasCompleted = habit.fechasCumplidas.includes(dateStr);
+
+    if (hasCompleted) {
+        habit.fechasCumplidas = habit.fechasCumplidas.filter(date => date !== dateStr);
     } else {
-        habit.fechasCumplidas.push(today);
+        habit.fechasCumplidas.push(dateStr);
     }
 
     saveHabits();
@@ -53,6 +69,7 @@ function toggleHabit(id) {
 
 function renderHabits() {
     const today = getTodayString();
+    const last7Days = getLast7Days();
     habitList.innerHTML = '';
 
     if (habits.length === 0) {
@@ -98,6 +115,26 @@ function renderHabits() {
 
         habitHeader.append(habitName, habitActions);
         habitElement.appendChild(habitHeader);
+
+        const heatmap = document.createElement('div');
+        heatmap.className = 'heatmap-container';
+
+        last7Days.forEach(dateStr => {
+            const isCompleted = Array.isArray(habit.fechasCumplidas)
+                && habit.fechasCumplidas.includes(dateStr);
+            const cell = document.createElement('div');
+            cell.className = 'heatmap-cell';
+            cell.title = dateStr;
+
+            if (isCompleted) {
+                cell.style.backgroundColor = habit.color;
+            }
+
+            cell.addEventListener('click', () => toggleHabit(habit.id, dateStr));
+            heatmap.appendChild(cell);
+        });
+
+        habitElement.appendChild(heatmap);
         habitList.appendChild(habitElement);
     });
 }
