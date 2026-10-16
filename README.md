@@ -1,26 +1,33 @@
 # Calm Tracker
 
-A minimalist, distraction-free habit tracker built around the principles of Calm Technology.
+A minimalist, distraction-free habit tracker extension for Chromium-based browsers, built around the principles of Calm Technology.
 
-Instead of punitive streak counters and toxic gamification, Calm Tracker provides a quiet, GitHub-inspired contribution heatmap. Missing a day is simply an empty cell, not a broken streak.
-
-## Philosophy
-
-- **Calm Tech**: The interface provides clarity without demanding unnecessary attention or anxiety.
-- **Zero Dependencies**: Built with pure web standards. No heavy frameworks, no external libraries.
-- **Privacy First**: 100% client-side. All data persists locally in the browser via `localStorage`.
+Instead of punitive streak counters and toxic gamification, Calm Tracker provides a quiet, GitHub-inspired contribution heatmap directly from your browser toolbar. Missing a day is simply an empty cell, not a broken streak.
 
 ## Features
 
+- Quick-access popup interface from the browser toolbar.
 - Custom habits with an icon and a curated, muted color palette.
 - GitHub-style heatmap visualization (Weekly, Monthly, and Annual views).
-- Fast, keyboard-friendly habit creation and deletion.
-- Fully offline and responsive design.
+- Non-intrusive habit editing and completion tracking.
+- Fully offline operation with native dark mode support.
 
 ## Tech Stack
 
-- **HTML5**: Semantic markup for accessibility and structure.
-- **CSS3**: Pure CSS, system typography, and responsive grid/flexbox layouts.
-- **JavaScript (ES6+)**: Vanilla JS handling state management, DOM rendering, and JSON serialization.
-- **Storage**: Browser `localStorage` API.
-- **Hosting**: GitHub Pages.
+- **Platform**: Manifest V3 Browser Extension (Chrome, Brave, Edge).
+- **Frontend**: Semantic HTML5 and pure CSS3 with system typography.
+- **Logic**: Vanilla JavaScript (ES6+).
+- **Storage**: Asynchronous `chrome.storage.local` API.
+
+## Repository Structure
+
+```text
+.
+├── manifest.json       # Extension configuration, permissions, and entry points
+├── index.html          # Popup interface markup
+├── css/
+│   └── style.css       # Core styling, layout constraints, and dark theme
+├── js/
+│   └── app.js          # Application state, DOM events, and storage persistence
+├── icons/              # Browser toolbar and extension icons (16px, 48px, 128px)
+└── README.md
