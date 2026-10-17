@@ -15,6 +15,9 @@ const colorRadios = document.querySelectorAll('input[name="habit-color"]');
 const colorPicker = document.getElementById('color-picker');
 const colorPickerToggle = document.getElementById('color-picker-toggle');
 const selectedColorSwatch = document.getElementById('selected-color-swatch');
+const customColorInput = document.getElementById('custom-color-input');
+const customColorSwatch = document.getElementById('custom-color-swatch');
+const customColorRadio = document.getElementById('custom-color-radio');
 const viewSelector = document.getElementById('view-selector');
 const themeToggle = document.getElementById('theme-toggle');
 const helpToggle = document.getElementById('help-toggle');
@@ -33,11 +36,30 @@ function saveHabits() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
 }
 
+function formatDate(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${date.getFullYear()}-${month}-${day}`;
+}
+
 function getTodayString() {
-    const today = new Date();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${today.getFullYear()}-${month}-${day}`;
+    return formatDate(new Date());
+}
+
+function calculateStreak(habit) {
+    const completed = new Set(Array.isArray(habit.fechasCumplidas) ? habit.fechasCumplidas : []);
+    const cursor = new Date();
+
+    if (!completed.has(formatDate(cursor))) {
+        cursor.setDate(cursor.getDate() - 1);
+    }
+
+    let streak = 0;
+    while (completed.has(formatDate(cursor))) {
+        streak++;
+        cursor.setDate(cursor.getDate() - 1);
+    }
+    return streak;
 }
 
 function getLastNDays(n) {
@@ -92,6 +114,22 @@ function renderHabits() {
         habitName.textContent = habit.emoji ? `${habit.emoji} ${habit.nombre}` : habit.nombre;
         habitName.style.color = habit.color;
 
+        const habitInfo = document.createElement('div');
+        habitInfo.className = 'habit-info';
+        habitInfo.appendChild(habitName);
+
+        const streak = calculateStreak(habit);
+        if (streak > 0) {
+            const streakBadge = document.createElement('span');
+            streakBadge.className = 'streak-badge';
+            streakBadge.title = `${streak} ${streak === 1 ? 'día seguido' : 'días seguidos'}`;
+            streakBadge.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2s5 4.5 5 9.5a5 5 0 0 1-10 0C7 9 9 7 9 7s.5 2 2 2c1.2 0 1.5-1 1.5-2C12.5 5.5 12 3.5 12 2Z"></path></svg>';
+            const streakCount = document.createElement('span');
+            streakCount.textContent = streak;
+            streakBadge.appendChild(streakCount);
+            habitInfo.appendChild(streakBadge);
+        }
+
         const isCompletedToday = Array.isArray(habit.fechasCumplidas)
             && habit.fechasCumplidas.includes(today);
         const checkButton = document.createElement('button');
@@ -103,20 +141,26 @@ function renderHabits() {
         checkButton.addEventListener('click', () => toggleHabit(habit.id));
 
         const editButton = document.createElement('button');
-        editButton.className = 'edit-btn';
-        editButton.textContent = 'Editar';
+        editButton.className = 'habit-icon-btn edit-icon-btn';
+        editButton.type = 'button';
+        editButton.title = 'Editar';
+        editButton.setAttribute('aria-label', 'Editar hábito');
+        editButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>';
         editButton.addEventListener('click', () => editHabit(habit.id));
 
         const deleteButton = document.createElement('button');
-        deleteButton.className = 'delete-btn';
-        deleteButton.textContent = 'Eliminar';
+        deleteButton.className = 'habit-icon-btn delete-icon-btn';
+        deleteButton.type = 'button';
+        deleteButton.title = 'Eliminar';
+        deleteButton.setAttribute('aria-label', 'Eliminar hábito');
+        deleteButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
         deleteButton.addEventListener('click', () => deleteHabit(habit.id));
 
         const habitActions = document.createElement('div');
         habitActions.className = 'habit-actions';
         habitActions.append(checkButton, editButton, deleteButton);
 
-        habitHeader.append(habitName, habitActions);
+        habitHeader.append(habitInfo, habitActions);
         habitElement.appendChild(habitHeader);
 
         const heatmap = document.createElement('div');
@@ -222,6 +266,41 @@ function renderHabitEditor(habit) {
         });
         colorOptions.appendChild(colorButton);
     });
+
+    const customColorField = document.createElement('input');
+    customColorField.type = 'color';
+    customColorField.className = 'custom-color-input';
+    customColorField.value = colors.includes(habit.color) ? '#000000' : habit.color;
+    customColorField.setAttribute('aria-label', 'Elegir color personalizado');
+
+    const customColorOption = document.createElement('label');
+    customColorOption.className = 'inline-color-option custom-color-option';
+    customColorOption.title = 'Color personalizado';
+
+    const customPlus = document.createElement('span');
+    customPlus.className = 'custom-color-plus';
+    customPlus.setAttribute('aria-hidden', 'true');
+    customPlus.textContent = '+';
+
+    customColorOption.append(customPlus, customColorField);
+
+    if (!colors.includes(habit.color)) {
+        customColorOption.classList.add('selected', 'has-custom-color');
+        customColorOption.style.backgroundColor = habit.color;
+        customColorOption.dataset.color = habit.color;
+    }
+
+    customColorField.addEventListener('input', () => {
+        colorOptions.querySelectorAll('.inline-color-option').forEach(option => {
+            option.classList.remove('selected');
+            option.setAttribute('aria-pressed', 'false');
+        });
+        customColorOption.classList.add('selected', 'has-custom-color');
+        customColorOption.style.backgroundColor = customColorField.value;
+        customColorOption.dataset.color = customColorField.value;
+    });
+
+    colorOptions.appendChild(customColorOption);
 
     const actions = document.createElement('div');
     actions.className = 'habit-editor-actions';
@@ -340,6 +419,17 @@ colorPickerToggle.addEventListener('click', event => {
     emojiPanel.classList.add('hidden');
     emojiInput.setAttribute('aria-expanded', 'false');
     event.stopPropagation();
+});
+
+customColorInput.addEventListener('input', () => {
+    const color = customColorInput.value;
+    customColorRadio.value = color;
+    customColorRadio.checked = true;
+    customColorSwatch.style.backgroundColor = color;
+    customColorSwatch.classList.add('has-custom-color');
+    updateEmojiInputColor();
+    colorPicker.classList.add('hidden');
+    colorPickerToggle.setAttribute('aria-expanded', 'false');
 });
 
 viewSelector.addEventListener('change', event => {
