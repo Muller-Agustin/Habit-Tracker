@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Calm Habit Tracker",
+  "name": "Habit Tracker",
   "version": "1.0.0",
-  "description": "Un seguidor de hábitos minimalista y sin distracciones.",
+  "description": "Un seguidor de hábitos sin distracciones.",
   "action": {
     "default_popup": "index.html",
-    "default_title": "Abrir Habit Tracker"
+    "default_title": "Habit Tracker"
   },
   "permissions": [
     "storage"
