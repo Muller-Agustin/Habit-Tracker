@@ -1,3 +1,44 @@
+:root {
+    --bg: #f9f9f9;
+    --text: #333;
+    --subtle: #555;
+    --muted: #777;
+    --header-bg: #c62828;
+    --header-text: #fff;
+    --icon-border: rgba(255, 255, 255, 0.65);
+    --icon-hover: rgba(255, 255, 255, 0.15);
+    --surface: #fff;
+    --surface-border: #eaeaea;
+    --surface-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --input-bg: #fff;
+    --input-border: #ccc;
+    --input-focus: #333;
+    --hover-bg: #f9f9f9;
+    --card-bg: #fff;
+    --card-border: #eaeaea;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --heatmap-empty: #eaeaea;
+    --heatmap-divider: #eaeaea;
+    --footer-bg: #f2f0ef;
+    --footer-border: #e5e5e5;
+    --footer-text: #555;
+    --form-btn-bg: #333;
+    --form-btn-hover: #555;
+    --edit: #6082b6;
+    --delete: #ff4d4d;
+    --accent-text: #fff;
+    --streak-bg: #f3f4f6;
+    --streak-text: #b45309;
+    --ring: #333;
+    --ring-offset: #f9f9f9;
+    --check-border: #ccc;
+    --check-text: #555;
+    --check-hover-border: #888;
+    --custom-border: #bbb;
+    --custom-bg: #fff;
+    --custom-text: #888;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -10,15 +51,15 @@ body {
     display: flex;
     flex-direction: column;
     font-family: system-ui, -apple-system, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
 /* Header */
 .app-header {
     width: 100%;
-    color: #fff;
-    background-color: #c62828;
+    color: var(--header-text);
+    background-color: var(--header-bg);
 }
 
 .header-content {
@@ -45,16 +86,16 @@ body {
     height: 32px;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.65);
+    border: 1px solid var(--icon-border);
     border-radius: 6px;
     background: transparent;
-    color: #fff;
+    color: inherit;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .icon-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--icon-hover);
 }
 
 .icon-btn svg {
@@ -77,10 +118,10 @@ body {
     inset: 50% auto auto 50%;
     width: min(90vw, 440px);
     padding: 1.5rem;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--surface-border);
     border-radius: 10px;
-    background-color: #fff;
-    color: #333;
+    background-color: var(--surface);
+    color: var(--text);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
     transform: translate(-50%, -50%);
 }
@@ -141,13 +182,14 @@ body {
 .emoji-input {
     width: 40px;
     padding: 0.5rem 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
-    background-color: #fff;
+    background-color: var(--input-bg);
+    color: var(--text);
     text-align: center;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .emoji-panel {
@@ -160,10 +202,10 @@ body {
     gap: 8px;
     margin-top: 5px;
     padding: 10px;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--surface-border);
     border-radius: 6px;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: var(--surface);
+    box-shadow: var(--surface-shadow);
 }
 
 .emoji-panel.hidden {
@@ -180,22 +222,24 @@ body {
 }
 
 .emoji-option:hover {
-    background-color: #f9f9f9;
+    background-color: var(--hover-bg);
 }
 
 .text-input {
     flex: 1;
     min-width: 140px;
     padding: 0.5rem 0.6rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text);
     font-size: 0.9rem;
 }
 
 .emoji-input:focus,
 .text-input:focus {
     outline: none;
-    border-color: #333;
+    border-color: var(--input-focus);
 }
 
 .color-picker-container {
@@ -208,7 +252,7 @@ body {
     justify-content: center;
     width: 32px;
     height: 32px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 50%;
     background: transparent;
     cursor: pointer;
@@ -223,10 +267,10 @@ body {
     gap: 8px;
     margin-top: 8px;
     padding: 10px;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--surface-border);
     border-radius: 6px;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: var(--surface);
+    box-shadow: var(--surface-shadow);
 }
 
 .color-picker.hidden {
@@ -238,6 +282,7 @@ body {
     width: 24px;
     height: 24px;
     border-radius: 50%;
+    background-color: var(--swatch-color, transparent);
     cursor: pointer;
     transition: transform 0.2s ease;
 }
@@ -251,7 +296,7 @@ body {
 
 .color-swatch:has(input[type="radio"]:checked) {
     transform: scale(1.2);
-    box-shadow: 0 0 0 2px #f9f9f9, 0 0 0 4px #333;
+    box-shadow: 0 0 0 2px var(--ring-offset), 0 0 0 4px var(--ring);
 }
 
 .custom-color-swatch {
@@ -259,9 +304,9 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #bbb;
-    background-color: #fff;
-    color: #888;
+    border: 2px dashed var(--custom-border);
+    background-color: var(--swatch-color, var(--custom-bg));
+    color: var(--custom-text);
     overflow: hidden;
 }
 
@@ -291,7 +336,7 @@ body {
     padding: 0.5rem 0.8rem;
     border: none;
     border-radius: 4px;
-    background-color: #333;
+    background-color: var(--form-btn-bg);
     color: #fff;
     font-size: 0.9rem;
     cursor: pointer;
@@ -299,7 +344,7 @@ body {
 }
 
 .habit-form button:not(.color-picker-toggle):hover {
-    background-color: #555;
+    background-color: var(--form-btn-hover);
 }
 
 .view-controls {
@@ -308,16 +353,17 @@ body {
     justify-content: flex-end;
     gap: 0.25rem;
     margin-bottom: 1rem;
-    color: #555;
+    color: var(--subtle);
     font-size: 0.9rem;
 }
 
 .view-selector {
     margin-left: 8px;
     padding: 0.4rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
-    background-color: #fff;
+    background-color: var(--input-bg);
+    color: var(--text);
     font-family: inherit;
     cursor: pointer;
     outline: none;
@@ -326,7 +372,7 @@ body {
 /* Tarjetas de hábitos */
 .empty-state {
     margin-top: 2rem;
-    color: #777;
+    color: var(--muted);
     text-align: center;
     font-style: italic;
 }
@@ -334,10 +380,10 @@ body {
 .habit-card {
     margin-bottom: 1rem;
     padding: 1.2rem;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--card-border);
     border-radius: 6px;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    background-color: var(--card-bg);
+    box-shadow: var(--card-shadow);
 }
 
 .habit-header {
@@ -348,6 +394,7 @@ body {
 }
 
 .habit-name {
+    color: var(--habit-color);
     font-size: 1.1rem;
     font-weight: 500;
 }
@@ -365,8 +412,8 @@ body {
     gap: 0.2rem;
     padding: 0.15rem 0.45rem;
     border-radius: 999px;
-    background-color: #f3f4f6;
-    color: #b45309;
+    background-color: var(--streak-bg);
+    color: var(--streak-text);
     font-size: 0.72rem;
     font-weight: 600;
     line-height: 1;
@@ -388,10 +435,10 @@ body {
 .inline-emoji-select {
     min-width: 90px;
     padding: 0.65rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
-    background-color: #fff;
-    color: inherit;
+    background-color: var(--input-bg);
+    color: var(--text);
     font: inherit;
 }
 
@@ -411,11 +458,12 @@ body {
     height: 28px;
     border: 2px solid transparent;
     border-radius: 50%;
+    background-color: var(--swatch-color, transparent);
     cursor: pointer;
 }
 
 .inline-color-option.selected {
-    outline: 2px solid #333;
+    outline: 2px solid var(--ring);
     outline-offset: 2px;
 }
 
@@ -424,9 +472,9 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #bbb;
-    background-color: #fff;
-    color: #888;
+    border: 2px dashed var(--custom-border);
+    background-color: var(--swatch-color, var(--custom-bg));
+    color: var(--custom-text);
     overflow: hidden;
 }
 
@@ -464,7 +512,7 @@ body {
     border-radius: 6px;
     background: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .habit-icon-btn svg {
@@ -478,23 +526,23 @@ body {
 }
 
 .edit-icon-btn {
-    border-color: #6082B6;
-    color: #6082B6;
+    border-color: var(--edit);
+    color: var(--edit);
 }
 
 .edit-icon-btn:hover {
-    background-color: #6082B6;
-    color: #fff;
+    background-color: var(--edit);
+    color: var(--accent-text);
 }
 
 .delete-icon-btn {
-    border-color: #ff4d4d;
-    color: #ff4d4d;
+    border-color: var(--delete);
+    color: var(--delete);
 }
 
 .delete-icon-btn:hover {
-    background-color: #ff4d4d;
-    color: #fff;
+    background-color: var(--delete);
+    color: var(--accent-text);
 }
 
 .delete-btn,
@@ -505,42 +553,43 @@ body {
     background: none;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .delete-btn {
-    border: 1px solid #ff4d4d;
-    color: #ff4d4d;
+    border: 1px solid var(--delete);
+    color: var(--delete);
 }
 
 .delete-btn:hover {
-    background-color: #ff4d4d;
-    color: #fff;
+    background-color: var(--delete);
+    color: var(--accent-text);
 }
 
 .edit-btn {
-    border: 1px solid #6082B6;
-    color: #6082B6;
+    border: 1px solid var(--edit);
+    color: var(--edit);
 }
 
 .edit-btn:hover {
-    background-color: #6082B6;
-    color: #fff;
+    background-color: var(--edit);
+    color: var(--accent-text);
 }
 
 .check-btn {
     margin-right: auto;
-    border: 2px solid #ccc;
-    color: #555;
+    border: 2px solid var(--check-border);
+    color: var(--check-text);
     font-weight: bold;
 }
 
 .check-btn:hover {
-    border-color: #888;
+    border-color: var(--check-hover-border);
 }
 
 .check-btn.completed {
     border-color: transparent;
+    background-color: var(--habit-color);
     color: #fff;
 }
 
@@ -552,16 +601,20 @@ body {
     gap: 4px;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px dashed #eaeaea;
+    border-top: 1px dashed var(--heatmap-divider);
 }
 
 .heatmap-cell {
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    background-color: #eaeaea;
+    background-color: var(--heatmap-empty);
     cursor: pointer;
     transition: transform 0.1s ease, background-color 0.3s ease;
+}
+
+.heatmap-cell.completed {
+    background-color: var(--habit-color);
 }
 
 .heatmap-cell:hover {
@@ -578,8 +631,8 @@ body {
 .app-footer {
     width: 100%;
     padding: 1.25rem 1rem;
-    border-top: 1px solid #e5e5e5;
-    background-color: #F2F0EF;
+    border-top: 1px solid var(--footer-border);
+    background-color: var(--footer-bg);
 }
 
 .footer-content {
@@ -588,7 +641,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    color: #555;
+    color: var(--footer-text);
     font-size: 0.9rem;
 }
 
@@ -639,159 +692,42 @@ body {
 
 body.dark-mode {
     color-scheme: dark;
-    background-color: #101923;
-    color: #e1e8ed;
-}
-
-body.dark-mode .app-header {
-    background-color: #1b3445;
-}
-
-body.dark-mode .icon-btn {
-    border-color: rgba(225, 232, 237, 0.55);
-}
-
-body.dark-mode .icon-btn:hover {
-    background-color: rgba(225, 232, 237, 0.12);
-}
-
-body.dark-mode .help-dialog {
-    border-color: #405261;
-    background-color: #182532;
-    color: #e1e8ed;
-}
-
-body.dark-mode .emoji-input,
-body.dark-mode .emoji-panel,
-body.dark-mode .text-input,
-body.dark-mode .view-selector {
-    border-color: #405261;
-    background-color: #1b2935;
-    color: #e1e8ed;
-}
-
-body.dark-mode .color-picker-toggle {
-    border-color: #405261;
-}
-
-body.dark-mode .color-picker {
-    border-color: #405261;
-    background-color: #1b2935;
-}
-
-body.dark-mode .emoji-option:hover {
-    background-color: #293a49;
-}
-
-body.dark-mode .emoji-input:focus,
-body.dark-mode .text-input:focus {
-    border-color: #8eafc4;
-}
-
-body.dark-mode .color-swatch:has(input[type="radio"]:checked) {
-    box-shadow: 0 0 0 2px #101923, 0 0 0 4px #8eafc4;
-}
-
-body.dark-mode .custom-color-swatch,
-body.dark-mode .inline-color-option.custom-color-option {
-    border-color: #536574;
-    background-color: #24333f;
-    color: #c5d0d8;
-}
-
-body.dark-mode .habit-form button:not(.color-picker-toggle) {
-    background-color: #36566b;
-}
-
-body.dark-mode .habit-form button:not(.color-picker-toggle):hover {
-    background-color: #466b82;
-}
-
-body.dark-mode .view-controls,
-body.dark-mode .check-btn {
-    color: #c5d0d8;
-}
-
-body.dark-mode .empty-state {
-    color: #a4b2bd;
-}
-
-body.dark-mode .habit-card {
-    border-color: #2d3d4b;
-    background-color: #182532;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
-}
-
-body.dark-mode .inline-emoji-select {
-    border-color: #405261;
-    background-color: #1b2935;
-    color: #e1e8ed;
-}
-
-body.dark-mode .inline-color-option.selected {
-    outline-color: #e1e8ed;
-}
-
-body.dark-mode .streak-badge {
-    background-color: #24333f;
-    color: #f0a94b;
-}
-
-body.dark-mode .check-btn {
-    border-color: #536574;
-}
-
-body.dark-mode .check-btn:hover {
-    border-color: #9aabb8;
-}
-
-body.dark-mode .check-btn.completed {
-    color: #fff;
-}
-
-body.dark-mode .edit-btn {
-    border-color: #91b7e5;
-    color: #91b7e5;
-}
-
-body.dark-mode .edit-btn:hover {
-    background-color: #91b7e5;
-    color: #101923;
-}
-
-body.dark-mode .edit-icon-btn {
-    border-color: #91b7e5;
-    color: #91b7e5;
-}
-
-body.dark-mode .edit-icon-btn:hover {
-    background-color: #91b7e5;
-    color: #101923;
-}
-
-body.dark-mode .delete-icon-btn {
-    border-color: #ff7676;
-    color: #ff7676;
-}
-
-body.dark-mode .delete-icon-btn:hover {
-    background-color: #ff7676;
-    color: #101923;
-}
-
-body.dark-mode .heatmap-container {
-    border-top-color: #354553;
-}
-
-body.dark-mode .heatmap-cell {
-    background-color: #344451;
-}
-
-body.dark-mode .app-footer {
-    border-top-color: #2d3d4b;
-    background-color: #141f2a;
-}
-
-body.dark-mode .footer-content {
-    color: #bdc9d2;
+    --bg: #101923;
+    --text: #e1e8ed;
+    --subtle: #c5d0d8;
+    --muted: #a4b2bd;
+    --header-bg: #1b3445;
+    --header-text: #e1e8ed;
+    --icon-border: rgba(225, 232, 237, 0.55);
+    --icon-hover: rgba(225, 232, 237, 0.12);
+    --surface: #182532;
+    --surface-border: #405261;
+    --surface-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+    --input-bg: #1b2935;
+    --input-border: #405261;
+    --input-focus: #8eafc4;
+    --hover-bg: #293a49;
+    --card-bg: #182532;
+    --card-border: #2d3d4b;
+    --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    --heatmap-empty: #344451;
+    --heatmap-divider: #354553;
+    --footer-bg: #141f2a;
+    --footer-border: #2d3d4b;
+    --footer-text: #bdc9d2;
+    --form-btn-bg: #36566b;
+    --form-btn-hover: #466b82;
+    --edit: #91b7e5;
+    --delete: #ff7676;
+    --accent-text: #101923;
+    --streak-bg: #24333f;
+    --streak-text: #f0a94b;
+    --ring: #e1e8ed;
+    --ring-offset: #101923;
+    --check-border: #536574;
+    --check-text: #c5d0d8;
+    --check-hover-border: #9aabb8;
+    --custom-border: #536574;
+    --custom-bg: #24333f;
+    --custom-text: #c5d0d8;
 }

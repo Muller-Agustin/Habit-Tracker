@@ -51,21 +51,9 @@
 
                 <div class="color-picker-container">
                     <button type="button" id="color-picker-toggle" class="color-picker-toggle" aria-label="Elegir color" aria-haspopup="true" aria-expanded="false">
-                        <span id="selected-color-swatch" class="color-swatch" style="background-color: #8A9A5B;"></span>
+                        <span id="selected-color-swatch" class="color-swatch"></span>
                     </button>
                     <div id="color-picker" class="color-picker hidden">
-                        <label class="color-swatch" style="background-color: #8A9A5B;">
-                            <input type="radio" name="habit-color" value="#8A9A5B" checked aria-label="Verde">
-                        </label>
-                        <label class="color-swatch" style="background-color: #6082B6;">
-                            <input type="radio" name="habit-color" value="#6082B6" aria-label="Azul">
-                        </label>
-                        <label class="color-swatch" style="background-color: #E2725B;">
-                            <input type="radio" name="habit-color" value="#E2725B" aria-label="Coral">
-                        </label>
-                        <label class="color-swatch" style="background-color: #DDA0DD;">
-                            <input type="radio" name="habit-color" value="#DDA0DD" aria-label="Lila">
-                        </label>
                         <label class="color-swatch custom-color-swatch" id="custom-color-swatch" title="Color personalizado">
                             <input type="color" id="custom-color-input" aria-label="Elegir color personalizado">
                             <span class="custom-color-plus" aria-hidden="true">+</span>
@@ -81,7 +69,7 @@
                 <label for="view-selector">Vista:</label>
                 <select id="view-selector" class="view-selector">
                     <option value="weekly" selected>Semanal</option>
-                    <option value="monthly">Mesual</option>
+                    <option value="monthly">Mensual</option>
                     <option value="yearly">Anual</option>
                 </select>
             </div>
